@@ -1,0 +1,64 @@
+Call:
+lm(formula = y ~ x)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-0.56538 -0.13236 -0.01933  0.16110  0.53712 
+
+Coefficients:
+             Estimate Std. Error  t value Pr(>|t|)    
+(Intercept) 48.783032   0.029782 %¿#^{!¿¿   <2e-16 ***
+x           -0.004704   0.004360   -1.079    0.285    
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1 
+
+Residual standard error: 0.2321 on 62 degrees of freedom
+Multiple R-squared: 0.01843,	Adjusted R-squared: 0.002599 
+F-statistic: 1.164 on 1 and 62 DF,  p-value: 0.2848
+--------------------------------------------------------------
+
+b0 = 48.783032; sb0 = 0.029782; tb0 = 0; pb0 = 2e-16
+b1 = -0.004704; sb1 = 0.004360; tb1 = -1.079; pb1 = 0.285
+# si falta alguno: t=b/s
+tb0 = b0/sb0; tb0
+sb0 = b0/tb0; sb0
+
+df = 62
+
+
+# PREGUNTA: ¿Cuánto vale la estimación del término independiente?
+b1
+
+# PREGUNTA: Extremo superior de un intervalo de confianza 95% para la pendiente.
+prob = 0.95
+alfa = 1-prob; alfa
+t = qt(1-alfa/2,df); t
+b0-t*sb0
+
+# PREGUNTA: Responda con el estadístico de la prueba ß0=0.
+tb0
+
+# PREGUNTA: Responda con el estadístico de la prueba ß1=0.
+tb1
+
+# PREGUNTA: ¿Podríamos rechazar con estos datos ß1=-0.1? (use riesgo a=1%; 0: no, 1: sí).
+B1 = 0.05
+alfa = 0.02
+t = qt(1-alfa/2,df); t
+ifelse((b1-B1)/sb1>t,"rebutgem H0","no rebutgem H0")
+
+# PREGUNTA: ¿Rechazaría la hipótesis de que la recta realmente es horizontal? (0: no, 1: sí)
+B1 = 0
+ifelse((b1-B1)/sb1>tb1,"rebutgem H0","no rebutgem H0")
+
+# PREGUNTA: P-valor de la prueba ß0=0.
+pb0
+
+# PREGUNTA: P-valor de la prueba ß1=0.
+pb1
+
+# PREGUNTA: En la salida hay un valor corrompido. ¿Puede recuperar el valor original?
+# si falta alguno: t=b/s
+
+# PREGUNTA: Diga el valor que se ha estimado para la desviación típica del término aleatorio del modelo.
+E = 

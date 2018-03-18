@@ -1,0 +1,200 @@
+datos <- read.table("clipboard",header=TRUE)
+datos
+n <- length(datos$met)
+
+ 
+
+### Exercici 1 ###
+# Complete la tabla de frecuencias
+frecA0 <- 0; frecA1 <- 0; frecA2 <- 0
+
+frecB0 <- 0; frecB1 <- 0; frecB2 <- 0
+
+for (i in 1:n) {
+	if (datos$met[i] == 'A') {
+		if (datos$stat[i] == 0) {
+			frecA0 = frecA0 + 1;
+		}
+		else if (datos$stat[i] == 1) {
+			frecA1 = frecA1 + 1;
+		}
+		else if (datos$stat[i] == 2) {
+			frecA2 = frecA2 + 1;
+		}
+	}
+	else {
+		if (datos$stat[i] == 0) {
+			frecB0 = frecB0 + 1;
+		}
+		else if (datos$stat[i] == 1) {
+			frecB1 = frecB1 + 1;
+		}
+		else if (datos$stat[i] == 2) {
+			frecB2 = frecB2 + 1;
+		}
+	}
+}
+
+frecA0; frecB0 	# columna 1
+frecA1; frecB1	# columna 2	
+frecA2; frecB2 	# columna 3
+
+  
+
+### Exercici 2 ###
+# ¿Cuál sería el número esperado de observaciones, si en cuanto al estado final
+# los dos procedimientos respondieran sin diferencias en su distribución? 
+totalA <- frecA0 + frecA1 + frecA2
+totalB <- frecB0 + frecB1 + frecB2
+total0 <- frecA0 + frecB0
+total1 <- frecA1 + frecB1
+total2 <- frecA2 + frecB2
+
+ 
+# RESPUESTA:
+# Escribir el que nos pidan de estos 6 segun: 
+#	- A = Simplex, B = Punto Interior
+#	- 0 = optimo, 1 = subóptimo, 2 = imposible
+
+espA0 <- n * (totalA/n) * (total0/n)
+espA1 <- n * (totalA/n) * (total1/n)
+espA2 <- n * (totalA/n) * (total2/n)
+espB0 <- n * (totalB/n) * (total0/n)
+espB1 <- n * (totalB/n) * (total1/n)
+espB2 <- n * (totalB/n) * (total2/n)
+
+ 
+
+ 
+
+### Exercici 3 ###
+# La prueba de Pearson consiste en observar si los valores esperados en caso de
+# independencia están muy alejados de los reales. Si fueran parecidos, querría
+# decir que no hay motivos para sospechar que un método funcione globalmente de
+# forma distinta al otro. Pero solo que haya una celda que demuestre ser muy
+# diferente, eso hace que el estadístico de Pearson (X2) aumente
+# significativamente. En este caso, ¿cuánto vale el estadístico de Pearson?
+
+pearson <- (((frecA0-espA0)^2)/espA0)+(((frecA1-espA1)^2)/espA1)+(((frecA2-espA2)^2)/espA2)+(((frecB0-espB0)^2)/espB0)+(((frecB1-espB1)^2)/espB1)+(((frecB2-espB2)^2)/espB2)
+pearson
+
+
+  
+
+# Exercici 4
+# La significación estadística de la prueba de Pearson es:
+#    1- muy escasa (1 de cada 5, o más). No hay evidencias sobre una relación
+#    2- posible (entre 1 de cada 5, y 1 de cada 20). Hay una evidencia muy débil
+#    3- moderada (entre 1 de cada 20, y 1 de cada 200). La evidencia sobre la 
+#	  relación es sustancial
+#    4- fuerte (1 de cada 200, o menos). Es muy raro que el resultado observado 
+# 	  se pueda deber únicamente al azar.
+
+# podemos usar:
+puntcritic <- qchisq(0.95,2)
+puntcritic
+pearson
+# se mira a ojo, ejemplos: 
+# puntcritic=5.991465 i pearson=2.500662 => caso 1
+ 
+
+ 
+
+### Exercici 5 ##
+# Mirando las proporciones logradas en los estados finales, ¿son similares
+# Simplex y Punto Interior? ¿Hay más proporción de instancias que acaban en
+# estado imposible con Simplex que con el otro método? Para responder,
+# introduzca ambas proporciones, separadas por un espacio.
+
+# Escribir el que nos pidan de estos 3 segun: 
+#	- A = Simplex, B = Punto Interior
+#	- 0 = optimo, 1 = subóptimo, 2 = imposible
+#optimo:
+	propA0 <- frecA0/(totalA)
+	propB0 <- frecB0/(totalB)
+	propA0; propB0
+#suboptimo:
+	propA1 <- frecA1/(totalA)
+	propB1 <- frecB1/(totalB)
+	propA2; propB2
+#imposible:
+	propA2 <- frecA2/(totalA)
+	propB2 <- frecB2/(totalB)
+	propA2; propB2
+
+
+ 
+
+
+### Exercici 6 ###
+# Suponiendo la hipótesis H
+# 		   H:	la proporción de resultados de tipo imposible es la 
+#		   	misma para ambos métodos
+# ¿cuál es la estimación de la probabilidad común que presenta este tipo
+# de resultado? 
+# Escribir el que nos pidan de estos 3 segun: 
+#	- A = Simplex, B = Punto Interior
+#	- 0 = optimo, 1 = subóptimo, 2 = imposible
+#optimo:
+	probcomun <- espA0/(espA0+espA1+espA2)
+	probcomun2 <- espB0/(espB0+espB1+espB2)
+	probcomun
+	probcomun2	# Solo se hace para comprobar que sean iguales
+#suboptimo:
+	probcomun <- espA1/(espA0+espA1+espA2)
+	probcomun2 <- espB1/(espB0+espB1+espB2)
+	probcomun
+	probcomun2	# Solo se hace para comprobar que sean iguales
+#imposible:
+	probcomun <- espA2/(espA0+espA1+espA2)
+	probcomun2 <- espB2/(espB0+espB1+espB2)
+	probcomun
+	probcomun2	# Solo se hace para comprobar que sean iguales
+
+ 
+
+
+### Exercici 7 ###
+# Calcule el error tipo correspondiente a la diferencia de dos proporciones,
+# bajo el supuesto de la hipótesis H.
+n1 <- totalA
+n2 <- totalB
+
+#optimo:
+	P1 <- frecA0/(frecA0+frecA1+frecA2)
+	P2 <- frecB0/(frecB0+frecB1+frecB2)
+#suboptimo:
+	P1 <- frecA1/(frecA0+frecA1+frecA2)
+	P2 <- frecB1/(frecB0+frecB1+frecB2)
+#imposible:
+	P1 <- frecA2/(frecA0+frecA1+frecA2)
+	P2 <- frecB2/(frecB0+frecB1+frecB2)
+
+P <- (n1*P1 + n2*P2)/(n1+n2)
+error <- sqrt(P*(1-P)/n1 + P*(1-P)/n2)
+error
+
+ 
+
+### Exercici 8 ### 
+# Para responder a la prueba que compara las proporciones de ambos métodos en
+# el estado imposible, diga cuánto vale el estadístico asociado a la prueba
+# (puede obviar el signo, ya que se tratará como bilateral), y el valor de P
+# de dicha prueba
+z <- (P1-P2)/error
+z
+
+#Dependiendo del signo de z elegir uno u otro (si da >1 es que
+#tienes que elegir el otro)
+
+pvalor <- 2*(1-pnorm(z)) #signo positivo
+pvalor <- 2*(pnorm(z)) #signo negativo
+pvalor
+
+
+
+
+
+
+
+.

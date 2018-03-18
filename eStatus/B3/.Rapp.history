@@ -1,0 +1,72 @@
+o = 1.3617
+V = o^2
+E = 2.3
+p = V /E
+q = 1 -p
+q
+p = q
+p
+n = E/p
+n
+n*p
+par = 9.5
+lambda = par
+ppois(12,lambra) - ppois(13,lambda)
+ppois(12,lambda) - ppois(13,lambda)
+dpois(13,lambda)
+ppois(12,lambda)
+k1 = 5
+k2 = 10
+t1 = 9; t2 = 18;
+l_new = lambda*3/8
+k = k2 - k1
+1 - ppois(k-1,l_new)
+k = 4
+k1 = lambda - k
+k2 = lambda +k
+ppois(k2 -1, lambda) - ppois(k1,lambda)
+prob = 0.774
+qpois(prob,lambda)
+k1; k2
+k = 1
+lambda = 6.8
+k1 = lambda -k
+k2 = lambda +k
+k1; k2
+prob = 0.278
+qpois(prob,lambda)
+ppois(k2+1,lambda) - ppois(k1 +1,lambda)
+k = 0
+k1 = lambda -k
+k2 = lambda +k
+k1; k2
+n1 = 650
+n2 = 100
+n3 = 0.3535
+t1 = 4
+t2 = 9
+t = t1 + t2/12; t
+t = t1 + (t2/12); t
+l1 = -log(n3)
+l2 = l1*(n1/n2)
+lt = l2*t; lt
+p = 0.05
+qpois(1-p, lt)
+t = 3
+p = 0.01
+lt = l2*t
+qpois(1-p,lt)
+t = 2.5
+n = 28
+lt = l2*t
+mu = lt
+o = sqrt(lt)
+mu; o;
+1 -pnorm(n,mu,o)
+t= 3
+n = 25
+cost = 1274
+lt = l2*t
+mu = lt
+o = sqrt(lt)
+(1-pnorm(n,mu,o))*cost
