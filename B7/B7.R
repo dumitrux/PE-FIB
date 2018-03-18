@@ -1,0 +1,98 @@
+#B5: Prueba de hipotesis, estudios sobre la frecuencia de procesamiento
+#    de los 2 sistemas operativos
+#H0: frecuencia android = frecuencia ios
+#H1: frecuencia android < frecuencia ios
+
+#Android
+android <- read.table("clipboard",header=TRUE)
+na <- length(android$SO) #numero de muestras con Android
+mua <- mean(android$Frecuencia) #media de la frecuencia de Android
+sda <- sd(android$Frecuencia) #desviacion estandard de la frecuencia de Android
+
+#iOS
+ios <- read.table("clipboard",header=TRUE)
+ni <- length(ios$SO) #numero de muestras con iOS
+mui <- mean(ios$Frecuencia) #media de la frecuencia de iOS
+sdi <- sd(ios$Frecuencia) #desviacion estandard de la frecuencia de iOS
+
+#S pooled
+s2 = (((na-1)*(sda^2))+((ni-1)*(sdi^2)))/(na+ni-2)
+s = sqrt(s2)
+se = s*sqrt((1/na)+(1/ni))
+
+t = (mua-mui)/se #estadistico t
+
+q_alpha = qt(0.05, df = na+ni-2)
+# unilateral, por la izquierda, Con una confiaza del 95%, t < q_alpha
+# Rechazamos H0
+p_val = pt(t, df = na+ni-2)
+# p-val < alpha(0.05), otra forma de rechazar H0
+
+IC = c((mua-mui)+q_alpha*se, (mua-mui)-q_alpha*se)
+# IC con valores negativos, indica que los smartphones de android
+# son mas lentos que ios. Cada 95 de 100 smartphone androids tiene
+# entre 0.53254815 y 0.07654276 menos frecuencia(GHz) que iOS
+
+t.test(android$Frecuencia, ios$Frecuencia, alternative ="less", var.equal=TRUE)
+# coinciden los valores
+
+
+
+
+summary(android$Frecuencia)
+summary(ios$Frecuencia)
+
+plot(android$Frecuencia)
+plot(ios$Frecuencia)
+# se aprecia que son variables aleatorias
+
+#se puede apreciar cierta normalidad
+x = density(android$Frecuencia)
+y = density(ios$Frecuencia)
+
+h<-hist(android$Frecuencia, xlab = "Frecuencia de CPU", col = "red", main="Historiograma de Android")
+qqnorm(android$Frecuencia) #
+qqline(android$Frecuencia) #
+plot(x)
+
+hist(ios$Frecuencia, xlab = "Frecuencia de CPU", col = "blue", main="Historiograma de iOs")
+qqnorm(ios$Frecuencia) #
+qqline(ios$Frecuencia)
+plot(y)
+
+boxplot(android$Frecuencia, ios$Frecuencia)
+# varianza android mucho mayor que varianza ios
+
+var.test(android$Frecuencia, ios$Frecuencia)
+
+
+#------------------------------------------------------------------------------
+
+#B6: estudio de la relacion entre el precio y la frecuencia
+
+dades <- read.table("clipboard", header = TRUE)
+y = dades$Precio
+x = dades$Frecuencia
+n = length(dades$Precio) #tamaño muestras
+mux = mean(x) #media precio
+muy = mean(y) #media frecuencia
+sx = sd(x) #desviacion estandard del precio
+sy = sd(y) #desviacion estandard de la frecuencia
+
+sxy = (sum(x*y)-sum(x)*sum(y)/n)/(n-1)
+r = sxy/(sx*sy) #corelacion
+b1 = sxy/sx^2 #pendiente
+b0 = muy-b1*mux #origen
+
+mod = lm((x)~(y), dades) #modelo lineal
+
+summary(mod)
+
+# y = -376.8954+439.1249*x
+
+plot(x, y, xlab = "Frecuencia", ylab = "Precio")
+plot(mod)  #hay que buscar transformaciones para cumplir las premisas
+#falla homocedasticidad y linealidad
+# transformacion para que se aproxime mejor al modelo lineal
+
+
